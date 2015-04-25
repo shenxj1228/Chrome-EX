@@ -1,3 +1,2 @@
-# Chrome-EX
-chrome extension
-Include zdww-oa and voice-alarm
+# zdww-oa
+chrome extension for zdww-oa
