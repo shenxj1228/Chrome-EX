@@ -1,0 +1,30 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "name": "万维OA辅助",
+  "version": "2.6.8",
+  "description":
+    "自动登录浙大万维企业管理系统，快捷填写日志，OA事项提醒，定时提醒",
+  "icons": {"16": "images/16.png", "48": "images/48.png", "128": "images/128.png"},
+  "permissions": [
+   "http://oa.walkinfo.com.cn:8002/oa/*","http://oa.walkinfo.com.cn/*","https://mail.walkinfo.com.cn/owa/*","notifications","contextMenus", "tabs", "http://www.google.com.hk/*","https://www.google.com.hk/*","tts","background"
+  ],
+  "browser_action": {
+    "default_icon": "images/48.png",
+	"default_title": "OA",
+	"default_popup": "popup.html"
+  },
+  "background": { "scripts": ["js/jquery.js","js/background.js"] },
+  "manifest_version": 2,
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    "images/check.png","images/info.png","images/error.png","images/tx.png","images/mail.png"
+  ],
+  "content_scripts":[
+	{
+	"matches": [ "http://oa.walkinfo.com.cn:8002/oa/*","http://oa.walkinfo.com.cn:8002/oa/Frame/HeadFrame.aspx","https://mail.walkinfo.com.cn/owa/*","http://oa.walkinfo.com.cn:8002/oa/Work/WorkDaylist.aspx","http://oa.walkinfo.com.cn:8002/oa/Task/DoingTask.aspx"],
+	"js":["js/jquery.js","js/login.js"],
+	"run_at": "document_end"
+	}
+	]
+}
