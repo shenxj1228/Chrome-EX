@@ -42,11 +42,6 @@ if (!localStorage.taskrows) {
 	localStorage.taskrows = "";
 }
 
-if (!localStorage.version) {
-	window.open('./options.html');
-	localStorage.storeName = "t_remind";
-}
-
 //打开数据库
 function openDB(callback) {
 	var version = myDB.version || 1;
@@ -304,25 +299,33 @@ window.onload = function () {
 	chrome.tts.stop();
 
 	if (!myDB.db) {
-		openDB(function(){
+		openDB(function () {
 			remind();
 			loadMenu();
-	conEMail();
-	taskNotification();
-	setInterval(function () {
-		conEMail();
-		taskNotification();
-	}, 180000);
+			conEMail();
+			taskNotification();
+			setInterval(function () {
+				conEMail();
+				taskNotification();
+			}, 180000);
 		});
+		if (!localStorage.version) {
+			window.open('./options.html');
+			localStorage.version = "true";
+		}
 	} else {
 		remind();
 		loadMenu();
-	conEMail();
-	taskNotification();
-	setInterval(function () {
 		conEMail();
 		taskNotification();
-	}, 180000);
+		setInterval(function () {
+			conEMail();
+			taskNotification();
+		}, 180000);
+		if (!localStorage.version) {
+			window.open('./options.html');
+			localStorage.version = "true";
+		}
 	}
 	chrome.runtime.requestUpdateCheck(function (status, details) {
 		if (status === 'update_available') {
@@ -368,14 +371,14 @@ function conEMail() {
 					httpRequest("https://mail.walkinfo.com.cn/owa/", 'GET', '', function (responsetxt) {
 						if (responsetxt != "NETerror") {
 							var re = new RegExp('收件箱 </a><span class="unrd">');
-							responsetxt=responsetxt.replace(/Inbox/g,"收件箱");
-							
+							responsetxt = responsetxt.replace(/Inbox/g, "收件箱");
+
 							if (re.test(responsetxt)) {
 								var s_num = responsetxt.indexOf('收件箱 </a><span class="unrd">') + ('收件箱 </a><span class="unrd">').length;
 								var e_num = responsetxt.substr(s_num).indexOf('<');
 								var value = responsetxt.substr(s_num + 1, e_num - 2);
-								localStorage.mailCount=value;
-								var bdgtext=(parseInt(value,10)+JSON.parse(localStorage.taskrows).length).toString();
+								localStorage.mailCount = value;
+								var bdgtext = (parseInt(value, 10) + JSON.parse(localStorage.taskrows).length).toString();
 								chrome.browserAction.setBadgeText({
 									'text' : bdgtext
 								});
@@ -395,15 +398,15 @@ function conEMail() {
 										}
 									});
 								}
-							}else{
-							localStorage.mailCount=0;
+							} else {
+								localStorage.mailCount = 0;
 							}
 							chrome.browserAction.setPopup({
 								popup : 'popup.html'
 							});
-						} 
+						}
 					});
-					
+
 				}
 			});
 		}
@@ -451,27 +454,27 @@ function ShowNotification(myNotification) {
 	var click_function = myNotification.callback;
 	var delayTime = myNotification.delayTime;
 	var re = /^[0-9]*[1-9][0-9]*$/;
-		chrome.notifications.create(notifica_id, {
-			type : 'basic',
-			iconUrl : icon,
-			title : re.test(delayTime)? (title+'（'+delayTime/1000+'s后自动关闭）'):title,
-			message : message
-		}, function (notificationId) {
-			chrome.notifications.onClicked.addListener(function (id) {
-				if (id == notificationId) {
-					if (click_function) {
-						click_function();
-					}
-					chrome.notifications.clear(id,function(){});
+	chrome.notifications.create(notifica_id, {
+		type : 'basic',
+		iconUrl : icon,
+		title : re.test(delayTime) ? (title + '（' + delayTime / 1000 + 's后自动关闭）') : title,
+		message : message
+	}, function (notificationId) {
+		chrome.notifications.onClicked.addListener(function (id) {
+			if (id == notificationId) {
+				if (click_function) {
+					click_function();
 				}
-			});
-			if (re.test(delayTime)) {
-				setTimeout(function () {
-					chrome.notifications.clear(notificationId,function(){});
-				}, delayTime);
+				chrome.notifications.clear(id, function () {});
 			}
 		});
-	
+		if (re.test(delayTime)) {
+			setTimeout(function () {
+				chrome.notifications.clear(notificationId, function () {});
+			}, delayTime);
+		}
+	});
+
 }
 
 //更新tab页
@@ -485,7 +488,7 @@ function updateTab(tabId, info, tab) {
 				localStorage.main_tab = tabId;
 
 				ShowNotification({
-					id:'login',
+					id : 'login',
 					title : '登录成功',
 					icon : '../images/check.png',
 					message : '自动登录成功！',
@@ -559,7 +562,7 @@ chrome.extension.onConnect.addListener(function (port) {
 		} else if (msg.answer.substr(0, 2) == "wo") {
 			//console.log("wo接入成功");
 			ShowNotification({
-				id:'log',
+				id : 'log',
 				title : '' + msg.answer.substr(2) + '的日志填写成功',
 				icon : '../images/check.png',
 				message : '点我查看' + msg.answer.substr(2) + '的日志',
@@ -571,7 +574,7 @@ chrome.extension.onConnect.addListener(function (port) {
 		} else if (msg.answer == "loginbad") {
 			//console.log("loginbad接入成功");
 			ShowNotification({
-				id:'login',
+				id : 'login',
 				title : '登录失败',
 				icon : '../images/error.png',
 				message : '自动登录失败,点我打开设置用户名密码！',
@@ -595,9 +598,9 @@ chrome.extension.onConnect.addListener(function (port) {
 				for (var i = 0; i < windowList.length; i++) {
 					windowList[i].tabs.forEach(function (e) {
 						if (e.url.indexOf(todotaskPage) > -1) {
-							var temparry=[];
+							var temparry = [];
 							temparry.push(windowList[i].id);
-							localStorage.arrywinID=JSON.stringify(temparry);
+							localStorage.arrywinID = JSON.stringify(temparry);
 							//console.log('arrywinID：' + arrywinID.join(','));
 
 						}
@@ -652,23 +655,23 @@ function taskNotification() {
 			var TaskList = "http://oa.walkinfo.com.cn:8002/oa/Task/TaskList.ashx?action=GetDoingTaskList&loginName=";
 			httpRequest(TaskList + localStorage.walkUsername, 'GET', '',
 				function (response) {
-				
+
 				if (response == "NETerror") {
 					console.log(response);
 				} else {
-					var badgeNum=$.parseJSON(response).total+(localStorage.mailCount=='loading...'? 0:parseInt(localStorage.mailCount,10));
+					var badgeNum = $.parseJSON(response).total + (localStorage.mailCount == 'loading...' ? 0 : parseInt(localStorage.mailCount, 10));
 					var newtaskrows = [];
 					var temp = [];
-					if(badgeNum>0){
-						
-							chrome.browserAction.setBadgeText({
-								'text' : badgeNum.toString()
-							});
-						}else{
-							chrome.browserAction.setBadgeText({
-								'text' : ''
-							});
-						}
+					if (badgeNum > 0) {
+
+						chrome.browserAction.setBadgeText({
+							'text' : badgeNum.toString()
+						});
+					} else {
+						chrome.browserAction.setBadgeText({
+							'text' : ''
+						});
+					}
 					if (loadCount === 0) {
 						localStorage.taskrows = JSON.stringify($.parseJSON(response).rows);
 						if ($.parseJSON(response).total > 0) {
