@@ -53,7 +53,8 @@ function openDB(callback) {
 	};
 	request.onsuccess = function (e) {
 		myDB.db = e.target.result;
-		callback;
+		if(typeof callback == "function") 
+			callback();
 	};
 	request.onupgradeneeded = function (e) {
 		myDB.db = e.target.result;
@@ -64,7 +65,8 @@ function openDB(callback) {
 
 		}
 		//console.log('DB version changed to ' + myDB.version);
-		callback;
+		if(typeof callback == "function") 
+			callback();
 	};
 
 }
