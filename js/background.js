@@ -301,7 +301,6 @@ window.onload = function () {
 	if (!myDB.db) {
 		openDB(function () {
 			remind();
-			loadMenu();
 			conEMail();
 			taskNotification();
 			setInterval(function () {
@@ -315,7 +314,6 @@ window.onload = function () {
 		}
 	} else {
 		remind();
-		loadMenu();
 		conEMail();
 		taskNotification();
 		setInterval(function () {
@@ -332,6 +330,7 @@ window.onload = function () {
 			chrome.runtime.restart();
 		}
 	});
+	loadMenu();
 };
 
 //修改提醒状态
