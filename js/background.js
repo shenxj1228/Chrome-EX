@@ -429,7 +429,7 @@ function connect_google(callback) {
 		},
 		error : function () {
 			localStorage.conn_google = false;
-			console.log('false');
+			//console.log('false');
 			callback();
 		}
 
@@ -442,7 +442,7 @@ function getGoogleHosts(addurl){
 	httpRequest(addurl,'GET','',function(response){
 		if (response != "NETerror") {
 			var downloadURL=$(response).find(".article-content>p>a").attr("href");
-			console.log(downloadURL.split("/").pop());
+			//console.log(downloadURL.split("/").pop());
 			if(downloadURL.split("/").pop()==localStorage.hostversion){
 			}
 			else{
@@ -456,7 +456,7 @@ function getGoogleHosts(addurl){
 			}
 			}
 		}else{
-			console.log("从"+url+"获取hosts内容失败");
+			console.log("从"+downloadURL+"获取hosts文件失败");
 		}
 	});
 }
