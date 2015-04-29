@@ -24,6 +24,13 @@ h2 {
   font-size: 100%
 }
 
+a{
+text-decoration:none;
+}
+a:hover{
+text-decoration:underline;
+}
+
 /*checkbox是否启用*/
 .slideThree {
   width: 80px;

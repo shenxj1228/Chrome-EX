@@ -32,7 +32,9 @@ $(document).ready(function() {
         OpenDoingWin(insid, stepid);
 
     });
-
+	$("#showhosts").click(function(){
+	$("#hosts").slideToggle(500);
+	});
 });
 
 function OpenDoingWin(receiveNo, stepID) {

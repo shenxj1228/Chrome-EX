@@ -2,12 +2,12 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
   "name": "万维OA辅助",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description":
     "自动登录浙大万维企业管理系统，快捷填写日志，OA事项提醒，定时提醒",
   "icons": {"16": "images/16.png", "48": "images/48.png", "128": "images/128.png"},
   "permissions": [
-   "http://oa.walkinfo.com.cn:8002/oa/*","http://oa.walkinfo.com.cn/*","https://mail.walkinfo.com.cn/owa/*","notifications","contextMenus", "tabs", "http://www.google.com.hk/*","https://www.google.com.hk/*","tts","background"
+   "http://oa.walkinfo.com.cn:8002/oa/*","http://oa.walkinfo.com.cn/*","https://mail.walkinfo.com.cn/owa/*","notifications","contextMenus", "tabs", "http://www.google.com.hk/*","https://www.google.com.hk/*","https://gghost.de/*","tts","background","downloads"
   ],
   "browser_action": {
     "default_icon": "images/48.png",

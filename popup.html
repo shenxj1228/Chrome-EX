@@ -19,7 +19,7 @@
         </h1>
         <div style="width:260px;font-size:16px">
             <span>
-                <a style="text-decoration: none;" id="login" href="#">
+                <a  id="login" href="#">
                     登录OA
                 </a>
             </span>
@@ -28,21 +28,31 @@
             </span>
             <span style="float:none">
                 新邮件:
-                <a style="color: blue;text-decoration: none;font-weight:bold;" id="mail"
+                <a style="color: blue;font-weight:bold;" id="mail"
                 href="https://mail.walkinfo.com.cn/owa/" target="_blank">
                 </a>
 				<image id='refresh' style="height:17px;cursor:pointer;vertical-align:middle;margin-left:10px;" src="../images/refresh.png" />
             </span>
             <span style="float:right;">
 			
-            <a style="color: blue;text-decoration: none;" id="option" href="options.html"
+            <a style="color: blue;" id="option" href="options.html"
                 target="_blank">
                     设置
                 </a>
             </span>
         </div>
+		<div style="margin-top:5px;vertical-align:middle;text-align:center;"><h3 style="border: 1px solid #9cc2ef;
+  background-color: #9CE4AA;cursor:pointer" id="showhosts" href="#">最新google hosts</h3>
+		<p id="hosts" style="display:none;overflow:hidden;margin: 0;padding-top:5px;text-align:left">
+		<a style="color: blue;" target="_blank" href="http://yun.baidu.com/s/1pJ4vEbx">下载链接1</a>
+		<a style="color: blue;" target="_blank" href="https://gghost.de">下载链接2</a>
+		<br>
+		下载链接1的密码是:<strong>chrome</strong>
+		<br >
+		替换路径：<br> C:\Windows\System32\drivers\etc\hosts</p>
+		</div>
         <h2></h2>
-        <div id="taskList" style="width:260px;font-size:14px" >
+        <div id="taskList" style="width:260px;max-height:300px;overflow-y:auto;font-size:14px" >
         </div>
     </body>
 

@@ -47,14 +47,12 @@ $(document).ready(function load() {
                     }
 
                 }
-                if (window.location.pathname == mailloginRelativePath) {
-
+                if (window.location.pathname == mailloginRelativePath&&window.location.search!="?url=https://mail.walkinfo.com.cn/owa/&reason=2") {
                     document.getElementById("username").value = arr[1];
                     document.getElementById("password").value = arr[2];
                     document.querySelector('input[type=submit]').click();
 
                 }
-
                 if (arr[3].indexOf("taskID:") > -1) {
                     if (window.location.pathname == oamainframeRelativePath) {
                         document.getElementById('right').src = "http://oa.walkinfo.com.cn:8002/oa/Task/TodoTask.aspx";

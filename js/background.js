@@ -2,7 +2,7 @@
 var timeout_arry = [];
 var first_time;
 var mailError = "";
-localStorage.mailCount = "loading...";
+localStorage.mailCount = "无法连接";
 var myDB = {
 	name : "OA_EX",
 	version : 1,
@@ -41,7 +41,9 @@ if (!localStorage.arrywinID) {
 if (!localStorage.taskrows) {
 	localStorage.taskrows = "";
 }
-
+if (!localStorage.hostversion) {
+	localStorage.hostversion = "";
+}
 //打开数据库
 function openDB(callback) {
 	var version = myDB.version || 1;
@@ -64,11 +66,8 @@ function openDB(callback) {
 			});
 
 		}
-		//console.log('DB version changed to ' + myDB.version);
-		if(typeof callback == "function") 
-			callback();
+		console.log('DB version changed to ' + myDB.version);
 	};
-
 }
 //关闭数据库
 function closeDB(db) {
@@ -299,28 +298,29 @@ window.onload = function () {
 	window.clearInterval();
 	//取消tts朗读
 	chrome.tts.stop();
-
 	if (!myDB.db) {
 		openDB(function () {
 			remind();
 			conEMail();
-			taskNotification();
 			setInterval(function () {
 				conEMail();
 				taskNotification();
+				connect_google(function(){getGoogleHosts("https://gghost.de/archives/28.html");});
 			}, 180000);
-		});
 		if (!localStorage.version) {
 			window.open('./options.html');
 			localStorage.version = "true";
 		}
+		});
+		
 	} else {
 		remind();
 		conEMail();
-		taskNotification();
 		setInterval(function () {
 			conEMail();
 			taskNotification();
+			remind();
+			connect_google(function(){getGoogleHosts("https://gghost.de/archives/28.html");});
 		}, 180000);
 		if (!localStorage.version) {
 			window.open('./options.html');
@@ -412,6 +412,53 @@ function conEMail() {
 			});
 		}
 	}
+}
+
+
+
+//连接google
+function connect_google(callback) {
+	$.ajax({
+		url : 'https://www.google.com.hk',
+		type : 'GET',
+		timeout : 50000,
+		beforeSend : function () {
+		},
+		success : function () {
+			localStorage.conn_google = true;
+		},
+		error : function () {
+			localStorage.conn_google = false;
+			console.log('false');
+			callback();
+		}
+
+	});
+
+}
+
+//getGoogleHosts
+function getGoogleHosts(addurl){
+	httpRequest(addurl,'GET','',function(response){
+		if (response != "NETerror") {
+			var downloadURL=$(response).find(".article-content>p>a").attr("href");
+			console.log(downloadURL.split("/").pop());
+			if(downloadURL.split("/").pop()==localStorage.hostversion){
+			}
+			else{
+			if(confirm("您的hosts无法访问google，是否下载hosts？\x0d更新方法(windows):将文件下载替换'C:/\Windows/\System32/\drivers/\etc/\hosts")){
+			if(downloadURL.indexOf('txt')>0){
+				chrome.downloads.download({url:downloadURL,filename:"hosts",conflictAction:"overwrite",saveAs:true},function(){});
+			}else{
+				chrome.downloads.download({url:downloadURL,conflictAction:"overwrite",saveAs:true},function(){});
+			}
+			localStorage.hostversion=downloadURL.split("/").pop();
+			}
+			}
+		}else{
+			console.log("从"+url+"获取hosts内容失败");
+		}
+	});
 }
 
 //刷新扩展选项页面

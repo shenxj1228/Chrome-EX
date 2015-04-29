@@ -549,6 +549,7 @@ function connect_google() {
 		},
 		error : function () {
 			localStorage.conn_google = false;
+			chrome.extension.getBackgroundPage().getGoogleHosts("https://gghost.de/archives/28.html");
 			$("a[name='connect_google']").html('无法连接google服务器，只支持中、英语音');
 
 		}
