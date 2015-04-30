@@ -133,10 +133,6 @@ $(document).ready(function load() {
                 });
 
             }
-            if (window.location.pathname == oamainframeRelativePath) {
-                document.getElementsByName('UP').document.querySelector("a[href=\"" + mailPage + "\"]").target = "_blank";
-
-            }
             if (window.location.pathname == sendtaskPage) {
                 port.postMessage({
                     answer: "RefreshTask"
