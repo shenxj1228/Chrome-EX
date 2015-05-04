@@ -32,6 +32,9 @@ if (!localStorage.add_window) {
 if (!localStorage.isActivated) {
 	localStorage.isActivated = true;
 }
+if (!localStorage.isActivated) {
+	localStorage.isDownload = true;
+}
 if (!localStorage.isSpeak) {
 	localStorage.isSpeak = true;
 }
@@ -421,7 +424,7 @@ function connect_google(callback) {
 	$.ajax({
 		url : 'https://www.google.com.hk',
 		type : 'GET',
-		timeout : 50000,
+		timeout : 100000,
 		beforeSend : function () {
 		},
 		success : function () {
@@ -429,7 +432,7 @@ function connect_google(callback) {
 		},
 		error : function () {
 			localStorage.conn_google = false;
-			//console.log('false');
+			console.log('false');
 			callback();
 		}
 
@@ -443,16 +446,34 @@ function getGoogleHosts(addurl){
 		if (response != "NETerror") {
 			var downloadURL=$(response).find(".article-content>p>a").attr("href");
 			//console.log(downloadURL.split("/").pop());
-			if(downloadURL.split("/").pop()==localStorage.hostversion){
+			if(downloadURL.split("/").pop()==localStorage.hostversion&&JSON.parse(localStorage.isDownload)){
 			}
 			else{
-			if(confirm("您的hosts无法访问google，是否下载hosts？\x0d更新方法(windows):将文件下载替换'C:/\Windows/\System32/\drivers/\etc/\hosts")){
+			if(confirm("您的hosts无法访问google，是否下载hosts？")){
 			if(downloadURL.indexOf('txt')>0){
 				chrome.downloads.download({url:downloadURL,filename:"hosts",conflictAction:"overwrite",saveAs:true},function(){});
 			}else{
 				chrome.downloads.download({url:downloadURL,conflictAction:"overwrite",saveAs:true},function(){});
 			}
 			localStorage.hostversion=downloadURL.split("/").pop();
+			ShowNotification({
+				id : "hosts",
+				title : 'hosts下载',
+				icon : '../images/tx.png',
+				message : "\x0d更新方法(windows):将文件下载替换'C:/\Windows/\System32/\drivers/\etc/\hosts",
+				callback : function () {},
+				delayTime:3000
+			});
+			}else{
+				localStorage.isDownload=false;
+				ShowNotification({
+					id : "hosts",
+					title : '取消下载hosts',
+					icon : '../images/tx.png',
+					message : '您已经取消了hosts下载，下次将不会提示您，如需开启，设置中启用',
+					callback : function () {},
+					delayTime:3000
+				});
 			}
 			}
 		}else{

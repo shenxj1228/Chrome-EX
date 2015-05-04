@@ -5,22 +5,25 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/jquery.multiselect.js"></script>
-	<script type="text/javascript" src="js/jquery.tooltipster.js"></script>
     <script type="text/javascript" src="js/options.js"></script>
 	<script type="text/javascript" src="js/overlay.js"></script>
+	<script type="text/javascript" src="js/jquery.fullPage.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css" />
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
 	<link rel="stylesheet" type="text/css" href="css/slidingbtn.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
 	<link rel="stylesheet" type="text/css" href="css/gh-buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css"/>
   </head>
   <body>
     <h1>
       <img src="images/48.png" alt="Toast">
       设置
     </h1>
-    <form id="options">
+    <div id="options">
+	<div  class="section active" >
+	<div id="slide1" class="slide">
 	    <h2>是否启用扩展</h2>
 	    <section title="是否启用扩展" >
 		<!-- .slideThree -->
@@ -34,13 +37,20 @@
 	    <section title="是否启用语音" >
 		<!-- .slideThree -->
 			<div class="slideThree">
-				<input type="checkbox" value="None" name="isSpeak" id="tts" name="check" checked />
+				<input type="checkbox" value="None" name="isSpeak" id="tts"  checked />
 				<label for="tts"></label>
 			</div>
 		<!-- end .slideThree -->
 		</section>
-	
-	  <div id="oa_option">
+	<h2>是否自动下载hosts</h2>
+	    <section title="是否自动下载hosts" >
+		<!-- .slideThree -->
+			<div class="slideThree">
+				<input type="checkbox" value="None" name="isDownload" id="isDownload" checked />
+				<label for="isDownload"></label>
+			</div>
+		<!-- end .slideThree -->
+		</section>
 	  <h2>OA设置</h2>
 			<section class="content">
 				<span class="input input--hoshi">
@@ -57,27 +67,18 @@
 					</label>
 				</span>
 			</section>
-		<div style="margin-left:0px;margin-top:10px"><a class="small button magenta"  name="Savebtn">保存</a></div>
-		</div><!-- /container -->
-	
-	<h2 class="cr-title" >提醒列表 <div style="float:right"><a href="#" class="ketchup tooltip" id='up_down' title="上移"><image   src="images/arrow_up.png" /></a></div></h2>
+		<a style="margin-left:30px;	" class="small button magenta" name="Savebtn">保存</a>
+		</div>
+	<div id="slide2" class="slide">
+	<h2 class="cr-title" >提醒列表</h2>
 	<div name="btndiv" class="button-group minor-group" style="margin-bottom:5px;">
-	<a class="button" style="margin-left:40px;" id="addbtn" name="addbtn">增  加</a>
+	<a class="button" style="margin-left:60px;" id="addbtn" name="addbtn">增  加</a>
 	<a class="button danger"  name="delbtn">删  除</a>
 	<a class="button"  name="inportbtn">导  入</a>
 	<a class="button"  name="exportbtn">导  出</a>
 	<a style="position:absolute;right:15px;color:red;" target="_blank"  href="http://www.google.com.hk" name="connect_google"  ></a>
 	</div>
-	<div id="tip" style="display:none;filter:alpha(opacity=100);opacity:1;">
-	<b  id="tipinfo" style='font-size:20px;color:white;'></b>
-	</div>
-	<div id="overlay"></div>
-	<div id="dialog">
-	<!--<p><a  id="close" href="#"><b>关闭</b></a></p>
-	<div ><textarea id="inportcontent" rows=14 >请在此帖入配置文件内容，请不要不多也不要少</textarea ></div> 
-	<div class="okdiv"><a class="small button magenta" id="ok" href="#">提交</a></div>-->
-	</div> 
-	<table class="bordered" name="remindTab" id="remindTab">
+	<table style="margin-left:60px;" class="bordered" name="remindTab" id="remindTab">
 	<thead>
     <tr id='tab_title'>
         <th width="20"><a class="divCheckBoxNoSel"  id ="checkAllSel"></a></th>
@@ -90,6 +91,17 @@
 
     </thead>
 	</table>
-    </form>
+	</div>
+    </div>
+	</div>
+	<div id="tip" style="display:none;filter:alpha(opacity=100);opacity:1;">
+	<b  id="tipinfo" style='font-size:20px;color:white;'></b>
+	</div>
+	<div id="overlay"></div>
+	<div id="dialog">
+	<!--<p><a  id="close" href="#"><b>关闭</b></a></p>
+	<div ><textarea id="inportcontent" rows=14 >请在此帖入配置文件内容，请不要不多也不要少</textarea ></div> 
+	<div class="okdiv"><a class="small button magenta" id="ok" href="#">提交</a></div>-->
+	</div> 
   </body>
 </html>

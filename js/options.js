@@ -482,29 +482,6 @@ function button_ready() {
 		showDialog('dialog');
 
 	});
-	//上移下移按钮
-	$("#up_down").click(function () {
-		var image = $("#up_down>:first-child")[0].src;
-		if (image.indexOf("arrow_up.png") > -1) {
-			$('#oa_option').slideUp(700,
-				function () {
-				$("#up_down>:first-child")[0].src = image.replace('arrow_up.png', 'arrow_down.png');
-				$("#up_down").tooltipster('content', "下移");
-
-			});
-
-		} else {
-			$('#oa_option').slideDown(700,
-				function () {
-				$("#up_down>:first-child")[0].src = image.replace('arrow_down.png', 'arrow_up.png');
-				$("#up_down").tooltipster('content', "上移");
-
-			});
-
-		}
-
-	});
-
 	//保存按钮
 	$("a[name='Savebtn']").click(function () {
 		var loginPage = "http://oa.walkinfo.com.cn:8002/oa/login.aspx";
@@ -513,7 +490,11 @@ function button_ready() {
 		chrome.extension.getBackgroundPage().conEMail();
 		chrome.extension.getBackgroundPage().taskNotification();
 		chrome.extension.getBackgroundPage().remind();
-		$("#up_down").click();
+		$("#tipinfo").text('保存成功');
+		showtip('tip', 'tipinfo');
+		setTimeout(function () {
+			closetip('tip');
+		},2000);
 		chrome.tabs.getAllInWindow(function (tabs) {
 			tabs.forEach(function (e) {
 				if (e.url == loginPage) {
@@ -560,15 +541,21 @@ function connect_google() {
 
 //页面加载
 $(document).ready(function () {
+		$('#options').fullpage({
+			'verticalCentered':false,
+			'controlArrowColor':'#3385ff',
+			'loopHorizontal':false,
+			'slidesNavPosition':'middle'
+		});
 	connect_google();
 	tab_ready();
 	button_ready();
 	clickCbx();
 	Dialog_ready();
-
 	// 页面text加载
 	if (localStorage.walkUsername !== '') {
 		$("#walkUsername").parent().addClass('input--filled');
+		$.fn.fullpage.moveSlideRight();
 	}else{
 		$("#tipinfo").text("请输入公司OA的用户名和密码");
 					showtip('tip', 'tipinfo');
@@ -612,6 +599,7 @@ $(document).ready(function () {
 	var form_isActivated = $("input[name='isActivated']");
 	form_isActivated.attr("checked", JSON.parse(localStorage.isActivated));
 	$("#tts").attr("checked", JSON.parse(localStorage.isSpeak));
+	$("#isDownload").attr("checked", JSON.parse(localStorage.isDownload));
 	$("#walkUsername").attr("value", localStorage.walkUsername);
 	$("#walkPassword").attr("value", localStorage.walkPassword);
 	ghost(form_isActivated.is(':checked'));
@@ -626,19 +614,8 @@ $(document).ready(function () {
 		localStorage.isSpeak = $("#tts").is(':checked');
 
 	});
-	$('#up_down').tooltipster();
-	if ($.trim(localStorage.walkUsername) !== "" && $.trim(localStorage.walkPassword) !== "") {
-		$('#oa_option').slideUp(700,
-			function () {
-			if ($.trim(localStorage.walkUsername) !== "" && $.trim(localStorage.walkPassword) !== "") {
-				$('#up_down').tooltipster('content', '点我展示OA设置');
-				$('#up_down').tooltipster('show');
-
-			}
-
-		});
-		$("#up_down>:first-child")[0].src = $("#up_down>:first-child")[0].src.replace('arrow_up.png', 'arrow_down.png');
-
-	}
+	$("#isDownload").change(function () {
+		localStorage.isDownload = $("#isDownload").is(':checked');
+	});
 
 });
