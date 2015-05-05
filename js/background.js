@@ -32,7 +32,7 @@ if (!localStorage.add_window) {
 if (!localStorage.isActivated) {
 	localStorage.isActivated = true;
 }
-if (!localStorage.isActivated) {
+if (!localStorage.isDownload) {
 	localStorage.isDownload = true;
 }
 if (!localStorage.isSpeak) {

@@ -532,7 +532,7 @@ $(document).ready(function () {
 			'verticalCentered':false,
 			'controlArrowColor':'#3385ff',
 			'loopHorizontal':false,
-			'slidesNavPosition':'middle',
+			'slidesNavPosition':'middle'
 		});
 	connect_google();
 	tab_ready();
@@ -583,16 +583,16 @@ $(document).ready(function () {
 	}); */
 
 	// Initialize the option controls.
-	var form_isActivated = $("input[name='isActivated']");
-	form_isActivated.attr("checked", JSON.parse(localStorage.isActivated));
+	var isActivated = $("input[name='isActivated']");
+	isActivated.attr("checked", JSON.parse(localStorage.isActivated));
 	$("#tts").attr("checked", JSON.parse(localStorage.isSpeak));
 	$("#isDownload").attr("checked", JSON.parse(localStorage.isDownload));
 	$("#walkUsername").attr("value", localStorage.walkUsername);
 	$("#walkPassword").attr("value", localStorage.walkPassword);
-	ghost(form_isActivated.is(':checked'));
+	ghost(isActivated.is(':checked'));
 	// Set the display activation and frequency.
-	form_isActivated.change(function () {
-		var tmp = form_isActivated.is(':checked');
+	isActivated.change(function () {
+		var tmp = isActivated.is(':checked');
 		localStorage.isActivated = tmp;
 		ghost(tmp);
 
@@ -604,13 +604,15 @@ $(document).ready(function () {
 	$("#isDownload").change(function () {
 		localStorage.isDownload = $("#isDownload").is(':checked');
 	});
-
+	
+	
 	chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
-    if(message=='reflash_tab'){
-		tab_ready();
-		chrome.extension.getBackgroundPage().remind();
-        sendResponse('ok');
-    }
-});
+		if(message=='reflash_tab'){
+			chrome.extension.getBackgroundPage().remind();
+			tab_ready();
+			sendResponse('ok');
+		}
+	});
+
 });
 
