@@ -8,21 +8,7 @@ function ghost(noActivated) {
 	$("#walkPassword").each(function () {
 		$(this).attr('disabled', tmp);
 	});
-	if (tmp) {
-		$("a[name='addbtn']").off();
-		$("a[name='delbtn']").off();
 
-	} else {
-		$("a[name='addbtn']").off().click(function () {
-			loadWindowList('-1');
-
-		});
-		$("a[name='delbtn']").off().click(function () {
-			delRow();
-
-		});
-
-	}
 	chrome.extension.getBackgroundPage().remind();
 
 }
@@ -169,6 +155,7 @@ function tab_ready() {
 	var transaction = myDB.db.transaction(storeName, 'readwrite');
 	var store = transaction.objectStore(storeName);
 	var cursorRequest = store.openCursor();
+	$("tbody").empty();
 	cursorRequest.onsuccess = function (e) {
 		var cursor = e.target.result;
 		if (cursor) {
@@ -210,9 +197,9 @@ function tab_ready() {
 				} else {
 					isuse = "";
 				}
-				var newRow = $('<tr><th><a name="checkSel" id=' + checkSelid + ' class="divCheckBoxNoSel"></a></th><th><div id="sliding" class="labelBox"><input type="checkbox"  id=' + isuesid + ' name="isuse" ' + isuse + '><label for=' + isuesid + ' class="check"></label></div></th><th><a id=' + timeid + ' name=time href="javascript:void(0);" >' + hour + ':' + minute + '(' + remindWeek + ')</a></th><th><div name="title"    >' + title + '</div></th><th><div  name="content" >' + content + '</div></th><th><a name="addrs" href=' + url + ' target="_blank" >' + url + '</a></th></tr>');
+				var newRow = $('<tr><th><a name="checkSel" id=' + checkSelid + ' class="divCheckBoxNoSel"></a></th><th><div id="sliding" class="labelBox"><input type="checkbox"  id=' + isuesid + ' name="isuse" ' + isuse + '><label for=' + isuesid + ' class="check"></label></div></th><th><a id=' + timeid + ' name=time href="#" >' + hour + ':' + minute + '(' + remindWeek + ')</a></th><th><div name="title"    >' + title + '</div></th><th><div  name="content" >' + content + '</div></th><th><a name="addrs" href=' + url + ' target="_blank" >' + url + '</a></th></tr>');
 				//$("table[name='remindTab']").empty();
-				$("tab_title").nextAll().empty();
+				
 				$("table[name='remindTab']").append(newRow);
 				$("a[name='time']").each(function () {
 					$(this).off().on('click',
@@ -421,17 +408,17 @@ function Dialog_ready() {
 //按钮加载
 function button_ready() {
 	//增加按钮
-	$("a[name='addbtn']").click(function () {
+	$("#addbtn").click(function () {
 		loadWindowList('-1');
 
 	});
 	//删除按钮
-	$("a[name='delbtn']").click(function () {
+	$("#delbtn").click(function () {
 		delRow();
 
 	});
 	//导出按钮
-	$("a[name='exportbtn']").click(function () {
+	$("#exportbtn").click(function () {
 		var myDB = chrome.extension.getBackgroundPage().myDB;
 		var storeName = localStorage.storeName;
 		var transaction = myDB.db.transaction(storeName, 'readwrite');
@@ -475,7 +462,7 @@ function button_ready() {
 
 	});
 	//导入按钮
-	$("a[name='inportbtn']").click(function () {
+	$("#inportbtn").click(function () {
 		var addconfig = '<p><a id="close" href="#"><b>关闭</b></a><a  style="margin-left:310px;color:white" id="ok" href="#"><b>提交</b></a></p><div class="fileInput"><input type="file" name="upfile" id="upfile" accept="text/plain" class="upfile" /><input class="upFileBtn" type="button" id="upFileBtn" value="上传" /></div><div id="drop_div"  ><br>点击浏览导入配置文件<br>或<br>将配置文件拖拽到这里</div >';
 		showOverlay();
 		$("#dialog").append(addconfig);
@@ -545,7 +532,7 @@ $(document).ready(function () {
 			'verticalCentered':false,
 			'controlArrowColor':'#3385ff',
 			'loopHorizontal':false,
-			'slidesNavPosition':'middle'
+			'slidesNavPosition':'middle',
 		});
 	connect_google();
 	tab_ready();
@@ -555,7 +542,7 @@ $(document).ready(function () {
 	// 页面text加载
 	if (localStorage.walkUsername !== '') {
 		$("#walkUsername").parent().addClass('input--filled');
-		$.fn.fullpage.moveSlideRight();
+		
 	}else{
 		$("#tipinfo").text("请输入公司OA的用户名和密码");
 					showtip('tip', 'tipinfo');
@@ -618,4 +605,12 @@ $(document).ready(function () {
 		localStorage.isDownload = $("#isDownload").is(':checked');
 	});
 
+	chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+    if(message=='reflash_tab'){
+		tab_ready();
+		chrome.extension.getBackgroundPage().remind();
+        sendResponse('ok');
+    }
 });
+});
+

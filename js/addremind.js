@@ -146,23 +146,29 @@ function saveData() {
 				remindinfo.url = $("#inputUrl").val(),
 				remindinfo.timefrequencys = getTimeFrequency();
 				store.put(remindinfo);
+				
 			};
+		
 		}
-		return true;
+		chrome.runtime.sendMessage('reflash_tab', function(response){
+			if(!JSON.parse(localStorage.isActivated)){
+			chrome.extension.getBackgroundPage().ShowNotification({
+								id : "tz",
+								title : '扩展未启用',
+								icon : '../images/error.png',
+								message : '自动提醒未启用，本地添加的事项不会提醒。如需启用请在设置中启用扩展',
+								callback : function () {},
+								delayTime:10000
+							});
+			}
+				if(response=='ok'){
+					window.close();
+				}
+			});
+		
 	}
 }
 
-function btn_read() {
-	$("#ok").off().on('click', function () {
-		if (saveData()) {
-			chrome.extension.getBackgroundPage().reloadOptionHtml('/options.html');
-			chrome.extension.getBackgroundPage().remind();
-			setTimeout(function () {
-				window.close();
-			}, 500);
-		}
-	});
-}
 
 $(document).ready(function () {
 	var id = $.getUrlParam('xh');
@@ -211,5 +217,5 @@ $(document).ready(function () {
 	}
 	cunt++;
 	text_checkbox_read();
-	btn_read();
+	$("#ok").click(function(){saveData();});
 });

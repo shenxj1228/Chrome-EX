@@ -257,6 +257,7 @@ function ts(value, index) {
 				speak(speakingtxt, lang, voice);
 			},
 				PercentTime);
+				
 
 	}
 
