@@ -302,6 +302,7 @@ window.onload = function () {
 	window.clearInterval();
 	//取消tts朗读
 	chrome.tts.stop();
+	
 	if (!myDB.db) {
 		openDB(function () {
 			remind();
