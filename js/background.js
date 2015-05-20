@@ -434,7 +434,7 @@ function connect_google(callback) {
 		},
 		error : function () {
 			localStorage.conn_google = false;
-			console.log('false');
+			console.log('conn false');
 			callback();
 		}
 
@@ -448,7 +448,7 @@ function getGoogleHosts(addurl){
 		if (response != "NETerror") {
 			var downloadURL=$(response).find(".article-content>p>a").attr("href");
 			//console.log(downloadURL.split("/").pop());
-			if(downloadURL.split("/").pop()==localStorage.hostversion&&JSON.parse(localStorage.isDownload)){
+			if(downloadURL.split("/").pop()==localStorage.hostversion||!JSON.parse(localStorage.isDownload)){
 			}
 			else{
 			if(confirm("您的hosts无法访问google，是否下载hosts？")){
@@ -760,6 +760,7 @@ function taskNotification() {
 							speak('您有***' + $.parseJSON(response).total + '***个需处理事项', 'zh_CN', 'native');
 
 						} else {
+							localStorage.taskrows="";
 							ShowNotification({
 								id : "task",
 								title : 'OA提醒',
@@ -798,6 +799,8 @@ function taskNotification() {
 							});
 							speak('您收到' + temp.length + '个新的需处理事项', 'zh_CN', 'native');
 
+						}else{
+							localStorage.taskrows="";
 						}
 
 					}

@@ -4,7 +4,6 @@ $(document).ready(function() {
 
     });
 	$('#refresh').click(function(){
-		localStorage.taskrows='';
 		chrome.extension.getBackgroundPage().first_time='';
 		chrome.extension.getBackgroundPage().conEMail();
 		chrome.extension.getBackgroundPage().taskNotification();
@@ -12,15 +11,18 @@ $(document).ready(function() {
 	});
 	var mailcount=localStorage.mailCount;
 	$('#mail').text(mailcount);
+	console.log(localStorage.taskrows);
     var taskrows = JSON.parse(localStorage.taskrows);
     if (taskrows.length == 0) {
+		$('#taskList').empty();
         var text = '<div style="-webkit-margin-after: 1em;">没有需要办理的事项</div>';
         $(text).appendTo('#taskList');
 
     } else {
+		$('#taskList').empty();
         for (var i = 0; i < taskrows.length; i++) {
             var atxt = taskrows[i].JJR + "→(^o^)→" + taskrows[i].AJMC;
-            var a = "<a style='-webkit-margin-after: 1em;' name='tasklink' href='#' instanceid="+taskrows[i].INSTANCEID+" stepid="+taskrows[i].StepID+" >" + atxt + "</a>";
+            var a = "<a style='-webkit-margin-after: 1em;' name='tasklink' href='#' instanceid="+taskrows[i].INSTANCEID+" stepid="+taskrows[i].StepID+" >" + atxt + "</a><br>";
             $(a).appendTo('#taskList');
 		}
 		

@@ -292,10 +292,11 @@ function Dialog_ready() {
 		var storeName = localStorage.storeName;
 		chrome.extension.getBackgroundPage().addData(myDB.db, storeName, reminds);
 		if (info === "") {
-			setTimeout(function () {
-				location.reload();
-			},
-				100);
+			chrome.extension.getBackgroundPage().remind();
+			tab_ready();
+			$("#dialog").empty();
+			$("#dialog").css("display",'none');
+			$("#overlay").css("display",'none');
 
 		} else {
 			if (info.length > 20) {
@@ -323,7 +324,6 @@ function Dialog_ready() {
 	$("#dialog").on('click', "#upFileBtn",
 		function () {
 		$("#upfile").click();
-
 	});
 	$("#dialog").on('change', "#upfile",
 		function () {
