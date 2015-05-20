@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#login').click(function() {
+     $('#login').click(function() {
         chrome.extension.getBackgroundPage().checkMainTab();
 
     });
@@ -8,26 +8,25 @@ $(document).ready(function() {
 		chrome.extension.getBackgroundPage().conEMail();
 		chrome.extension.getBackgroundPage().taskNotification();
 		window.close();
-	});
-	var mailcount=localStorage.mailCount;
-	$('#mail').text(mailcount);
-	console.log(localStorage.taskrows);
-    var taskrows = JSON.parse(localStorage.taskrows);
-    if (taskrows.length == 0) {
+	}); 
+	 var mailcount=localStorage.mailCount;
+	$('#mail').text(mailcount); 
+    var taskrows = localStorage.taskrows!='' ? JSON.parse(localStorage.taskrows):[];
+    if (taskrows.length === 0) {
 		$('#taskList').empty();
         var text = '<div style="-webkit-margin-after: 1em;">没有需要办理的事项</div>';
         $(text).appendTo('#taskList');
-
     } else {
 		$('#taskList').empty();
-        for (var i = 0; i < taskrows.length; i++) {
-            var atxt = taskrows[i].JJR + "→(^o^)→" + taskrows[i].AJMC;
+       for (var i = 0; i < taskrows.length; i++) {
+             var atxt = taskrows[i].JJR + "→(^o^)→" + taskrows[i].AJMC;
             var a = "<a style='-webkit-margin-after: 1em;' name='tasklink' href='#' instanceid="+taskrows[i].INSTANCEID+" stepid="+taskrows[i].StepID+" >" + atxt + "</a><br>";
-            $(a).appendTo('#taskList');
+            $(a).appendTo('#taskList'); 
 		}
 		
-    }
-	$("a[name='tasklink']").one("click", 
+    } 
+	
+	 $("a[name='tasklink']").one("click", 
     function() {
         var insid = $(this).attr('instanceid');
         var stepid = $(this).attr('stepid');
@@ -39,8 +38,8 @@ $(document).ready(function() {
 	});
 });
 
-function OpenDoingWin(receiveNo, stepID) {
+ function OpenDoingWin(receiveNo, stepID) {
     localStorage.PostAction = "taskID:" + receiveNo + '~' + stepID;
     chrome.extension.getBackgroundPage().checkMainTab();
 
-}
+} 

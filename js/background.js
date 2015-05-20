@@ -42,7 +42,7 @@ if (!localStorage.arrywinID) {
 	localStorage.arrywinID = "";
 }
 if (!localStorage.taskrows) {
-	localStorage.taskrows = "";
+	localStorage.taskrows = '';
 }
 if (!localStorage.hostversion) {
 	localStorage.hostversion = "";
@@ -760,7 +760,7 @@ function taskNotification() {
 							speak('您有***' + $.parseJSON(response).total + '***个需处理事项', 'zh_CN', 'native');
 
 						} else {
-							localStorage.taskrows="";
+							localStorage.taskrows='';
 							ShowNotification({
 								id : "task",
 								title : 'OA提醒',
@@ -778,6 +778,7 @@ function taskNotification() {
 
 					} else {
 						newtaskrows = $.parseJSON(response).rows;
+						localStorage.taskrows = JSON.stringify(newtaskrows);
 						for (var j = 0; j < newtaskrows.length; j++) {
 							if ($.inArray(newtaskrows[j], JSON.parse(localStorage.taskrows)) < 0) {
 								//console.log('newtaskID[j]' + newtaskID[j]);
@@ -785,7 +786,7 @@ function taskNotification() {
 							}
 
 						}
-						localStorage.taskrows = JSON.stringify(newtaskrows);
+						
 						if (temp.length > 0) {
 							ShowNotification({
 								id : "task",
@@ -799,8 +800,6 @@ function taskNotification() {
 							});
 							speak('您收到' + temp.length + '个新的需处理事项', 'zh_CN', 'native');
 
-						}else{
-							localStorage.taskrows="";
 						}
 
 					}
