@@ -2,7 +2,7 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
   "name": "万维OA辅助",
-  "version": "2.7.5",
+  "version": "2.7.6",
   "description":
     "自动登录浙大万维企业管理系统，快捷填写日志，OA事项提醒，定时提醒",
   "icons": {"16": "images/16.png", "48": "images/48.png", "128": "images/128.png"},

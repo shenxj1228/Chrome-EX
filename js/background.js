@@ -168,7 +168,9 @@ function getTimeString(hh, mm) {
 }
 
 //产生提示
-function ts(value, index) {
+function createTS(arryValue) {
+//console.log(arryValue);
+$.each(arryValue,function(n,value){
 	var now = new Date();
 	var PercentTime = (function getPercentTime() {
 		var nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
@@ -179,7 +181,7 @@ function ts(value, index) {
 		return differenceSeconds * 1000;
 
 	})();
-	var state = value.state;
+	var state = Boolean(value.state);
 	var Arrweek = value.timefrequencys.split(',');
 	var hours = value.hour;
 	var minutes = value.minute;
@@ -227,7 +229,8 @@ function ts(value, index) {
 
 		}
 		var addurl = value.url;
-		timeout_arry[index] = window.setTimeout(
+		
+		window.setTimeout(
 				function () {
 				if (cunt == "-1") {
 					updatestate(value.id);
@@ -257,38 +260,31 @@ function ts(value, index) {
 				speak(speakingtxt, lang, voice);
 			},
 				PercentTime);
-				
-
+				//console.log("PercentTime:",PercentTime);
 	}
-
+});
 }
 
 function remind() {
-	if (timeout_arry.length > 0) {
-		for (var j = 0; j < timeout_arry.length; j++) {
-			clearTimeout(timeout_arry[j]);
-
-		}
-		timeout_arry = [];
-
-	}
 	if (JSON.parse(localStorage.isActivated)) {
 		var transaction = myDB.db.transaction(localStorage.storeName, 'readwrite');
 		var store = transaction.objectStore(localStorage.storeName);
 		var cursorRequest = store.openCursor();
-		var i = 0;
+		var result_arry=[];
 		cursorRequest.onsuccess = function (e) {
 			var cursor = e.target.result;
 			if (cursor) {
 				//console.log(cursor.value.hour);
-				ts(cursor.value, i);
-				i++;
-				cursor.
-				continue();
-
+				result_arry.push(cursor.value);
+				cursor.continue();
+			}else{
+				//console.log(result_arry);
+				createTS(result_arry);
 			}
-
 		};
+		
+			
+		
 
 	}
 
