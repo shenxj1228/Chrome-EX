@@ -1,7 +1,8 @@
-﻿var loadCount = 0;
+var loadCount = 0;
 var timeout_arry = [];
 var first_time;
 var mailError = "";
+var timeout_id=[];
 localStorage.mailCount = "无法连接";
 var myDB = {
 	name : "OA_EX",
@@ -169,7 +170,7 @@ function getTimeString(hh, mm) {
 
 //产生提示
 function createTS(arryValue) {
-//console.log(arryValue);
+
 $.each(arryValue,function(n,value){
 	var now = new Date();
 	var PercentTime = (function getPercentTime() {
@@ -230,12 +231,14 @@ $.each(arryValue,function(n,value){
 		}
 		var addurl = value.url;
 		
-		window.setTimeout(
+	    timeout_id.push(window.setTimeout(
 				function () {
+				console.log('ss');
 				if (cunt == "-1") {
 					updatestate(value.id);
 
 				}
+				
 				if (addurl === "") {
 					ShowNotification({
 						id : "tz",
@@ -259,8 +262,9 @@ $.each(arryValue,function(n,value){
 				}
 				speak(speakingtxt, lang, voice);
 			},
-				PercentTime);
-				//console.log("PercentTime:",PercentTime);
+				PercentTime));
+				PercentTime));
+				
 	}
 });
 }
@@ -278,7 +282,10 @@ function remind() {
 				result_arry.push(cursor.value);
 				cursor.continue();
 			}else{
-				//console.log(result_arry);
+				//console.log('ts');
+				$.each(timeout_id,function(i,val){
+					window.clearTimeout(val);
+				});
 				createTS(result_arry);
 			}
 		};
