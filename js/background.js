@@ -263,7 +263,6 @@ $.each(arryValue,function(n,value){
 				speak(speakingtxt, lang, voice);
 			},
 				PercentTime));
-				PercentTime));
 				
 	}
 });
